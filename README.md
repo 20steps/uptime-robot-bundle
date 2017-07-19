@@ -95,8 +95,7 @@ Hints
 
 * In case your application uses multiple accounts at UptimeRobot you can dynamically change
 the api key as follows
-* Cp. section "parameters" of [**UptimeRobot API Documentation**][7] for an explanation of parameters.
-* The UptimeRobot API has been enhanced by some extra utility methods such as api->monitor()->findByUrl(..), api->monitor->createOrUpdate(..), api->monitor->pauseByUrl(), api->monitor->resumeByUrl() etc.
+
 
 ```
 <?php
@@ -105,6 +104,9 @@ the api key as follows
 $this->uptimeRobotAPI->setApiKey($myApiKey);
 
 ```
+
+* Cp. section "parameters" of [**UptimeRobot API Documentation**][7] for an explanation of parameters.
+* The UptimeRobot API has been enhanced by some extra utility methods such as api->monitor()->findByUrl(..), api->monitor->createOrUpdate(..), api->monitor->pauseByUrl(), api->monitor->resumeByUrl() etc.
 
 Authors
 -------
