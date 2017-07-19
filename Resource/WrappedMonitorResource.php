@@ -2,17 +2,49 @@
 
 namespace twentysteps\Commons\UptimeRobotBundle\Resource;
 
+use Http\Client\HttpClient;
+use Http\Message\MessageFactory;
+use Symfony\Component\Serializer\SerializerInterface;
+
 use twentysteps\Commons\EnsureBundle\Ensure;
+
 use twentysteps\Commons\UptimeRobotBundle\Model\GetMonitorsResponse;
 use twentysteps\Commons\UptimeRobotBundle\Model\MonitorResponse;
+use twentysteps\Commons\UptimeRobotBundle\UptimeRobotAPI;
 
 class WrappedMonitorResource extends MonitorResource
 {
+	private $api;
+	
+	public function __construct(UptimeRobotAPI $api, $httpClient, MessageFactory $messageFactory, SerializerInterface $serializer)
+	{
+		parent::__construct($httpClient,$messageFactory,$serializer);
+		$this->api = $api;
+	}
+	
+	/**
+	 * @param $id
+	 * @return null|\twentysteps\Commons\UptimeRobotBundle\Model\Monitor
+	 */
+	public function find($id) {
+		$monitorsResponse = $this->all();
+		if ($monitorsResponse instanceof GetMonitorsResponse) {
+			if ($monitorsResponse->getStat()=='ok') {
+				foreach ($monitorsResponse->getMonitors() as $monitor) {
+					if ($monitor->getId()==$id) {
+						return $monitor;
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
 	/**
 	 * @param $url
-	 * @return bool|\twentysteps\Commons\UptimeRobotBundle\Model\Monitor
+	 * @return null|\twentysteps\Commons\UptimeRobotBundle\Model\Monitor
 	 */
-	public function findByUrl($url) {
+	public function findOneByUrl($url) {
 		$monitorsResponse = $this->all();
 		if ($monitorsResponse instanceof GetMonitorsResponse) {
 			if ($monitorsResponse->getStat()=='ok') {
@@ -23,7 +55,7 @@ class WrappedMonitorResource extends MonitorResource
 				}
 			}
 		}
-		return false;
+		return null;
 	}
 	
 	/**
@@ -32,7 +64,7 @@ class WrappedMonitorResource extends MonitorResource
 	 */
 	public function createOrUpdate($parameters) {
 		Ensure::isTrue(is_array($parameters) && array_key_exists('url',$parameters),'check your parameters - must be an array and contain a url entry');
-		$monitorResponse = $this->findByUrl($parameters['url']);
+		$monitorResponse = $this->findOneByUrl($parameters['url']);
 		if ($monitorResponse) {
 			$parameters['id']=$monitorResponse->getId();
 			return $this->update($parameters);
@@ -64,7 +96,7 @@ class WrappedMonitorResource extends MonitorResource
 	 * @return bool|\Psr\Http\Message\ResponseInterface|MonitorResponse
 	 */
 	public function pauseByUrl($url) {
-		$monitorResponse = $this->findByUrl($url);
+		$monitorResponse = $this->findOneByUrl($url);
 		if ($monitorResponse) {
 			/**
 			 * @var MonitorResponse $monitorResponse
@@ -98,7 +130,7 @@ class WrappedMonitorResource extends MonitorResource
 	 * @return bool|\Psr\Http\Message\ResponseInterface|MonitorResponse
 	 */
 	public function resumeByUrl($url) {
-		$monitorResponse = $this->findByUrl($url);
+		$monitorResponse = $this->findOneByUrl($url);
 		if ($monitorResponse) {
 			/**
 			 * @var MonitorResponse $monitorResponse
@@ -107,6 +139,25 @@ class WrappedMonitorResource extends MonitorResource
 			return $this->resume($parameters);
 		}
 		return false;
+	}
+	
+	// helpers
+	
+	/**
+	 * @return UptimeRobotAPI
+	 */
+	protected function getApi() {
+		return $this->api;
+	}
+	
+	/**
+	 * @param UptimeRobotAPI $api
+	 * @return WrappedAccountDetailsResource
+	 */
+	protected function setApi($api) {
+		$this->api = $api;
+		
+		return $this;
 	}
 	
 }

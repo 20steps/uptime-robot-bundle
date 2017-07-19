@@ -106,7 +106,7 @@ $this->uptimeRobotAPI->setApiKey($myApiKey);
 ```
 
 * Cp. section "parameters" of [**UptimeRobot API Documentation**][7] for an explanation of parameters.
-* The UptimeRobot API has been enhanced by some extra utility methods such as api->monitor()->findByUrl(..), api->monitor->createOrUpdate(..), api->monitor->pauseByUrl(), api->monitor->resumeByUrl() etc.
+* The UptimeRobot API has been enhanced by some extra utility methods such as api->monitor()->findOneByUrl(..), api->monitor->createOrUpdate(..), api->monitor->pauseByUrl(), api->monitor->resumeByUrl() etc.
 
 Authors
 -------

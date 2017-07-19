@@ -2,17 +2,50 @@
 
 namespace twentysteps\Commons\UptimeRobotBundle\Resource;
 
+use Http\Client\HttpClient;
+use Http\Message\MessageFactory;
+use Symfony\Component\Serializer\SerializerInterface;
+
 use twentysteps\Commons\EnsureBundle\Ensure;
+
 use twentysteps\Commons\UptimeRobotBundle\Model\GetAlertContactsResponse;
+use twentysteps\Commons\UptimeRobotBundle\UptimeRobotAPI;
+
 
 class WrappedAlertContactResource extends AlertContactResource
 {
+	private $api;
+	
+	public function __construct(UptimeRobotAPI $api,$httpClient, MessageFactory $messageFactory, SerializerInterface $serializer)
+	{
+		parent::__construct($httpClient,$messageFactory,$serializer);
+		$this->api = $api;
+	}
+	
+	/**
+	 * @param $id
+	 * @return null|\twentysteps\Commons\UptimeRobotBundle\Model\AlertContact
+	 */
+	public function find($id) {
+		$alertContactsResponse = $this->all();
+		if ($alertContactsResponse instanceof GetAlertContactsResponse) {
+			if ($alertContactsResponse->getStat()=='ok') {
+				foreach ($alertContactsResponse->getAlertContacts() as $alertContact) {
+					if ($alertContact->getId()==$id) {
+						return $alertContact;
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
 	/**
 	 * @param $value
 	 * @param int $type
-	 * @return bool|\twentysteps\Commons\UptimeRobotBundle\Model\AlertContact
+	 * @return null|\twentysteps\Commons\UptimeRobotBundle\Model\AlertContact
 	 */
-	public function findByValueAndType($value,$type=2) {
+	public function findOneByValueAndType($value,$type=2) {
 		$alertContactsResponse = $this->all();
 		if ($alertContactsResponse instanceof GetAlertContactsResponse) {
 			if ($alertContactsResponse->getStat()=='ok') {
@@ -23,7 +56,7 @@ class WrappedAlertContactResource extends AlertContactResource
 				}
 			}
 		}
-		return false;
+		return null;
 	}
 	
 	/**
@@ -35,12 +68,32 @@ class WrappedAlertContactResource extends AlertContactResource
 		if (!array_key_exists('type',$parameters)) {
 			$parameters['type']=2;
 		}
-		$alertContactResponse = $this->findByValueAndType($parameters['value'],$parameters['type']);
+		$alertContactResponse = $this->findOneByValueAndType($parameters['value'],$parameters['type']);
 		if ($alertContactResponse) {
 			$parameters['id']=$alertContactResponse->getId();
 			return $this->update($parameters);
 		}
 		return $this->create($parameters);
 	}
+	
+	// helpers
+	
+	/**
+	 * @return UptimeRobotAPI
+	 */
+	protected function getApi() {
+		return $this->api;
+	}
+	
+	/**
+	 * @param UptimeRobotAPI $api
+	 * @return WrappedAccountDetailsResource
+	 */
+	protected function setApi($api) {
+		$this->api = $api;
+		
+		return $this;
+	}
+	
 	
 }

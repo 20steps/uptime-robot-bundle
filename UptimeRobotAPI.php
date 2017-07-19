@@ -21,11 +21,11 @@ use GuzzleHttp\Psr7\Request;
 use function GuzzleHttp\Psr7\stream_for;
 
 use twentysteps\Commons\EnsureBundle\Ensure;
-use twentysteps\Commons\UptimeRobotBundle\Resource\AccountDetailsResource;
+use twentysteps\Commons\UptimeRobotBundle\Resource\WrappedAccountDetailsResource;
 use twentysteps\Commons\UptimeRobotBundle\Resource\WrappedAlertContactResource;
 use twentysteps\Commons\UptimeRobotBundle\Resource\WrappedMonitorResource;
-use twentysteps\Commons\UptimeRobotBundle\Resource\MWindowResource;
-use twentysteps\Commons\UptimeRobotBundle\Resource\PSPResource;
+use twentysteps\Commons\UptimeRobotBundle\Resource\WrappedMWindowResource;
+use twentysteps\Commons\UptimeRobotBundle\Resource\WrappedPSPResource;
 
 use twentysteps\Commons\UptimeRobotBundle\Normalizer\NormalizerFactory;
 
@@ -66,42 +66,42 @@ class UptimeRobotAPI {
     // public API
 	
 	/**
-	 * @return AccountDetailsResource
+	 * @return WrappedAccountDetailsResource
 	 */
 	public function accountDetails() {
 		// create the resource
-		return new AccountDetailsResource($this->getHTTPClient(),$this->getMessageFactory(),$this->getSerializer());
+		return new WrappedAccountDetailsResource($this,$this->getHTTPClient(),$this->getMessageFactory(),$this->getSerializer());
 	}
 	
 	/**
 	 * @return WrappedMonitorResource
 	 */
 	public function monitor() {
-		return new WrappedMonitorResource($this->getHTTPClient(),$this->getMessageFactory(),$this->getSerializer());
+		return new WrappedMonitorResource($this,$this->getHTTPClient(),$this->getMessageFactory(),$this->getSerializer());
 	}
 	
 	/**
-	 * @return AlertContactResource
+	 * @return WrappedAlertContactResource
 	 */
 	public function alertContact() {
 		// create the resource
-		return new WrappedAlertContactResource($this->getHTTPClient(),$this->getMessageFactory(),$this->getSerializer());
+		return new WrappedAlertContactResource($this,$this->getHTTPClient(),$this->getMessageFactory(),$this->getSerializer());
 	}
 	
 	/**
-	 * @return MWindowResource
+	 * @return WrappedMWindowResource
 	 */
 	public function maintenanceWindow() {
 		// create the resource
-		return new MWindowResource($this->getHTTPClient(),$this->getMessageFactory(),$this->getSerializer());
+		return new WrappedMWindowResource($this,$this->getHTTPClient(),$this->getMessageFactory(),$this->getSerializer());
 	}
 	
 	/**
-	 * @return PSPResource
+	 * @return WrappedPSPResource
 	 */
 	public function publicStatusPage() {
 		// create the resource
-		return new PSPResource($this->getHTTPClient(),$this->getMessageFactory(),$this->getSerializer());
+		return new WrappedPSPResource($this,$this->getHTTPClient(),$this->getMessageFactory(),$this->getSerializer());
 	}
 	
 	
