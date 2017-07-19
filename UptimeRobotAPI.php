@@ -146,9 +146,11 @@ class UptimeRobotAPI {
 		$handlerStack->setHandler(new CurlHandler());
 		$handlerStack->unshift(Middleware::mapRequest(function (RequestInterface $request) {
 			if ($request->getMethod() == 'POST' && $request->getHeader('Content-Type')[0] == 'application/x-www-form-urlencoded') {
+				$now = new \DateTime();
+				$url = $request->getUri().'?cb='.$now->getTimestamp();
 				return new Request(
 					$request->getMethod(),
-					$request->getUri(),
+					$url,
 					$request->getHeaders() + ['Content-Type' => 'application/x-www-form-urlencoded'],
 					stream_for($request->getBody() . '&' . http_build_query(['api_key' => $this->getApiKey()])),
 					$request->getProtocolVersion()

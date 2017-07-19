@@ -73,27 +73,30 @@ class WrappedMonitorResource extends MonitorResource
 	}
 	
 	
-	/*
-	 * Pause a monitor.
+	/**
 	 *
-	 * @param array  $parameters {
-	 *     @var string $apiKey API key
-	 *     @var string $format Response format
-	 *     @var int $id ID of monitor to pause
-	 * }
-	 * @param string $fetch      Fetch mode (object or response)
+	 * pause a monitor
 	 *
-	 * @return \Psr\Http\Message\ResponseInterface|\twentysteps\Commons\UptimeRobotBundle\Model\MonitorResponse
+	 * @param array $parameters
+	 * @param string $fetch
+	 * @return bool|\Psr\Http\Message\ResponseInterface|\twentysteps\Commons\UptimeRobotBundle\Model\Error
 	 */
 	public function pause($parameters = array(), $fetch = self::FETCH_OBJECT)
 	{
 		$parameters['status']=0;
-		return $this->update($parameters,$fetch);
+		$monitorResponse = $this->update($parameters,$fetch);
+		if ($monitorResponse instanceof MonitorResponse) {
+			if ($monitorResponse->getStat()=='ok') {
+				return true;
+			}
+			return $monitorResponse->getError();
+		}
+		return $monitorResponse;
 	}
 	
 	/**
 	 * @param $url
-	 * @return bool|\Psr\Http\Message\ResponseInterface|MonitorResponse
+	 * @return bool|null|\Psr\Http\Message\ResponseInterface|\twentysteps\Commons\UptimeRobotBundle\Model\Error
 	 */
 	public function pauseByUrl($url) {
 		$monitorResponse = $this->findOneByUrl($url);
@@ -104,30 +107,33 @@ class WrappedMonitorResource extends MonitorResource
 			$parameters['id'] = $monitorResponse->getId();
 			return $this->pause($parameters);
 		}
-		return false;
+		return null;
 	}
 	
-	/*
-	 * Resume a monitor.
+	/**
 	 *
-	 * @param array  $parameters {
-	 *     @var string $apiKey API key
-	 *     @var string $format Response format
-	 *     @var int $id ID of monitor to pause
-	 * }
-	 * @param string $fetch      Fetch mode (object or response)
+	 * resume a monitor
 	 *
-	 * @return \Psr\Http\Message\ResponseInterface|\twentysteps\Commons\UptimeRobotBundle\Model\MonitorResponse
+	 * @param array $parameters
+	 * @param string $fetch
+	 * @return bool|\Psr\Http\Message\ResponseInterface|\twentysteps\Commons\UptimeRobotBundle\Model\Error
 	 */
 	public function resume($parameters = array(), $fetch = self::FETCH_OBJECT)
 	{
 		$parameters['status']=1;
-		return $this->update($parameters,$fetch);
+		$monitorResponse = $this->update($parameters,$fetch);
+		if ($monitorResponse instanceof MonitorResponse) {
+			if ($monitorResponse->getStat()=='ok') {
+				return true;
+			}
+			return $monitorResponse->getError();
+		}
+		return $monitorResponse;
 	}
 	
 	/**
 	 * @param $url
-	 * @return bool|\Psr\Http\Message\ResponseInterface|MonitorResponse
+	 * @return bool|null|\Psr\Http\Message\ResponseInterface|\twentysteps\Commons\UptimeRobotBundle\Model\Error
 	 */
 	public function resumeByUrl($url) {
 		$monitorResponse = $this->findOneByUrl($url);
@@ -138,7 +144,7 @@ class WrappedMonitorResource extends MonitorResource
 			$parameters['id'] = $monitorResponse->getId();
 			return $this->resume($parameters);
 		}
-		return false;
+		return null;
 	}
 	
 	// helpers
