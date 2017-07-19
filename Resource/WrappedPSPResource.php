@@ -41,14 +41,13 @@ class WrappedPSPResource extends PSPResource
 	}
 	
 	/**
-	 * @param $url
+	 * @param $monitorId
 	 * @return bool|\twentysteps\Commons\UptimeRobotBundle\Model\PSP
 	 */
 	public function findOneByMonitorId($monitorId) {
 		/**
 		 * @var Monitor $monitor
 		 */
-		$monitor = Ensure::isNotNull($this->getApi()->monitor()->find($monitorId),'no monitor with id ['.$monitorId.'] found');
 		$pspsResponse = $this->all();
 		if ($pspsResponse instanceof GetPSPsResponse) {
 			if ($pspsResponse->getStat()=='ok') {
@@ -64,7 +63,33 @@ class WrappedPSPResource extends PSPResource
 	}
 	
 	/**
-	 * @param $parameters
+	 * @param array $monitorIds
+	 * @return bool|\twentysteps\Commons\UptimeRobotBundle\Model\PSP
+	 */
+	public function findOneByMonitorIds(array $monitorIds) {
+		/**
+		 * @var Monitor $monitor
+		 */
+		$pspsResponse = $this->all();
+		if ($pspsResponse instanceof GetPSPsResponse) {
+			if ($pspsResponse->getStat()=='ok') {
+				foreach ($pspsResponse->getPsps() as $psp) {
+					$monitors = $psp->getMonitors();
+					if (is_array($monitors)) {
+						sort($monitors);
+						sort($monitorIds);
+						if ($monitors==$monitorIds) {
+							return $psp;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * @param int $monitorId
 	 * @return \Psr\Http\Message\ResponseInterface|\twentysteps\Commons\UptimeRobotBundle\Model\PSPResponse
 	 */
 	public function createOrUpdateByMonitorId($monitorId) {
@@ -75,6 +100,21 @@ class WrappedPSPResource extends PSPResource
 		$psp = $this->findOneByMonitorId($monitorId);
 		$parameters['monitors']=$monitorId;
 		$parameters['friendly_name']=$monitor->getFriendlyName();
+		if ($psp) {
+			$parameters['id']=$psp->getId();
+			return $this->update($parameters);
+		}
+		return $this->create($parameters);
+	}
+	
+	/**
+	 * @param array $monitorIds
+	 * @return \Psr\Http\Message\ResponseInterface|\twentysteps\Commons\UptimeRobotBundle\Model\PSPResponse
+	 */
+	public function createOrUpdateByMonitorIds(array $monitorIds,$friendlyName) {
+		$psp = $this->findOneByMonitorIds($monitorIds);
+		$parameters['monitors']=implode('-',$monitorIds);
+		$parameters['friendly_name']=$friendlyName;
 		if ($psp) {
 			$parameters['id']=$psp->getId();
 			return $this->update($parameters);
