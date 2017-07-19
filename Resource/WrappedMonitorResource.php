@@ -147,6 +147,29 @@ class WrappedMonitorResource extends MonitorResource
 		return null;
 	}
 	
+	/**
+	 * @param $url
+	 * @return bool|null|\twentysteps\Commons\UptimeRobotBundle\Model\Error|\twentysteps\Commons\UptimeRobotBundle\Model\Monitor|MonitorResponse
+	 */
+	public function resetByUrl($url) {
+		$monitorResponse = $this->findOneByUrl($url);
+		if ($monitorResponse) {
+			/**
+			 * @var MonitorResponse $monitorResponse
+			 */
+			$parameters['id'] = $monitorResponse->getId();
+			$monitorResponse = $this->reset($parameters);
+			if ($monitorResponse instanceof MonitorResponse) {
+				if ($monitorResponse->getStat() == 'ok') {
+					return true;
+				}
+				return $monitorResponse->getError();
+			}
+			return $monitorResponse;
+		}
+		return null;
+	}
+	
 	// helpers
 	
 	/**
