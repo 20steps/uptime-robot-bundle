@@ -138,10 +138,9 @@ class UptimeRobotAPI {
 		if (!array_key_exists('headers',$config)) {
 			$config['headers']=[];
 		}
-		$config['headers']['cache-control'] = 'no-cache';
 		$config['headers']['Content-Type'] = 'application/x-www-form-urlencoded';
 		
-		// add api_key to all requests if POST and x-www-form-urlencoded
+		// add api_key and Cache-control header to all requests if POST and x-www-form-urlencoded
 		$handlerStack = new HandlerStack();
 		$handlerStack->setHandler(new CurlHandler());
 		$handlerStack->unshift(Middleware::mapRequest(function (RequestInterface $request) {
@@ -151,7 +150,7 @@ class UptimeRobotAPI {
 				return new Request(
 					$request->getMethod(),
 					$url,
-					$request->getHeaders() + ['Content-Type' => 'application/x-www-form-urlencoded'],
+					$request->getHeaders() + ['Content-Type' => 'application/x-www-form-urlencoded', 'Cache-Control' => 'no-cache'],
 					stream_for($request->getBody() . '&' . http_build_query(['api_key' => $this->getApiKey()])),
 					$request->getProtocolVersion()
 				);
