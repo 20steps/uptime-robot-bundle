@@ -53,7 +53,8 @@ class WrappedPSPResource extends PSPResource
 		if ($pspsResponse instanceof GetPSPsResponse) {
 			if ($pspsResponse->getStat()=='ok') {
 				foreach ($pspsResponse->getPsps() as $psp) {
-					if ($psp->getMonitors()==$monitorId) {
+					$monitors = $psp->getMonitors();
+					if (is_array($monitors) && count($monitors)==1 && $monitors[0] == $monitorId) {
 						return $psp;
 					}
 				}
