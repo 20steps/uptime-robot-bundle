@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+bin/vendor/jane-openapi generate -c vendor/20steps/commons-uptime-robot-bundle/twentysteps/Commons/UptimeRobotBundle/.jane-openapi  vendor/20steps/commons-uptime-robot-bundle/twentysteps/Commons/UptimeRobotBundle/swagger.json

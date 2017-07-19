@@ -1,0 +1,7 @@
+<?php
+
+return [
+    'openapi-file' => __DIR__ . '/swagger.json',
+    'namespace' => 'twentysteps\Commons\UptimeRobotBundle',
+    'directory' => __DIR__ . '/',
+];

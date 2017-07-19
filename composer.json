@@ -1,0 +1,32 @@
+{
+  "name": "20steps/commons-uptime-robot-bundle",
+  "type": "symfony-bundle",
+  "description": "Symfony bundle for service-oriented client for UptimeRobot API v2.0",
+  "keywords": ["symfony", "symfony2", "symfony3", "sf", "sf2", "sf3", "UptimeRobot", "OpenAPI", "Swagger", "httplug","20steps"],
+  "homepage": "https://github.com/20steps/commons-uptime-robot-bundle",
+  "license": "LGPL-3.0+",
+  "authors": [
+    {
+      "name": "Helmut Hoffer von Ankershoffen",
+      "email": "hhva@20steps.de",
+      "homepage": "https://20steps.de"
+    }
+  ],
+  "require": {
+    "php": ">=7.0.0",
+    "symfony/framework-bundle": "~3.0",
+    "php-http/guzzle6-adapter": "^1.1",
+    "20steps/commons-ensure-bundle": "^1.0",
+    "jane/openapi-runtime": "^2.0"
+  },
+  "require-dev": {
+    "jane/open-api": "^2.0"
+  },
+  "autoload": {
+    "psr-0": {
+      "twentysteps\\Commons\\UptimeRobotBundle": ""
+    }
+  },
+  "target-dir": "twentysteps/Commons/UptimeRobotBundle",
+  "bin": ["bin/uptime-robot-bundle-build"]
+}

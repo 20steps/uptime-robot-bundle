@@ -1,0 +1,4 @@
+services:
+    twentysteps_commons.uptime_robot.api:
+        class: twentysteps\Commons\UptimeRobotBundle\UptimeRobotAPI
+        arguments: [  '@logger', '%twentysteps_commons_uptime_robot_api_key%', '@?debug.stopwatch' ]

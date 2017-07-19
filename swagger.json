@@ -1,0 +1,1561 @@
+
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "UptimeRobot API v2.0",
+    "description": "It lets you get the details of your monitors, logs, create/edit/delete monitors, alert contacts, maintenance windows and public status pages.",
+    "termsOfService": "https://uptimerobot.com/termsOfService",
+    "version": "2.0"
+  },
+  "host": "api.uptimerobot.com",
+  "basePath": "/v2",
+  "schemes": [
+    "https"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "definitions": {
+    "Error": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "parameter_name": {
+          "type": "string"
+        }
+      }
+    },
+    "Pagination": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "string"
+        },
+        "limit": {
+          "type": "string"
+        },
+        "total": {
+          "type": "string"
+        }
+      }
+    },
+    "AccountDetailsResponse": {
+      "type": "object",
+      "properties": {
+        "stat": {
+          "type": "string"
+        },
+        "account": {
+          "$ref": "#/definitions/Account"
+        },
+        "error": {
+          "$ref": "#/definitions/Error"
+        }
+      },
+      "id": {
+        "type": "string"
+      },
+      "message": {
+        "type": "string"
+      }
+    },
+    "Account": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "monitor_limit": {
+          "type": "integer"
+        },
+        "monitor_interval": {
+          "type": "integer"
+        },
+        "up_monitors": {
+          "type": "integer"
+        },
+        "down_monitors": {
+          "type": "integer"
+        },
+        "paused_monitors": {
+          "type": "integer"
+        }
+      }
+    },
+    "GetMonitorsResponse": {
+      "type": "object",
+      "properties": {
+        "stat": {
+          "type": "string"
+        },
+        "error": {
+          "$ref": "#/definitions/Error"
+        },
+        "pagination": {
+          "$ref": "#/definitions/Pagination"
+        },
+        "monitors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Monitor"
+          }
+        }
+      }
+    },
+    "MonitorResponse": {
+      "type": "object",
+      "properties": {
+        "stat": {
+          "type": "string"
+        },
+        "monitor": {
+          "$ref": "#/definitions/Monitor"
+        },
+        "error": {
+          "$ref": "#/definitions/Error"
+        }
+      }
+    },
+    "Monitor": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "friendly_name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "type": {
+          "type": "integer"
+        },
+        "sub_type": {
+          "type": "string"
+        },
+        "keyword_type": {
+          "type": "string"
+        },
+        "keyword_value": {
+          "type": "string"
+        },
+        "http_username": {
+          "type": "string"
+        },
+        "http_password": {
+          "type": "string"
+        },
+        "port": {
+          "type": "string"
+        },
+        "interval": {
+          "type": "integer"
+        },
+        "status": {
+          "type": "integer"
+        },
+        "create_datetime": {
+          "type": "integer"
+        },
+        "monitor_group": {
+          "type": "integer"
+        },
+        "is_group_main": {
+          "type": "integer"
+        },
+        "logs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Log"
+          }
+        }
+      }
+    },
+    "Log": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "datetime": {
+          "type": "integer"
+        },
+        "duration": {
+          "type": "integer"
+        }
+      }
+    },
+    "ResponseTime": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "datetime": {
+          "type": "string"
+        }
+      }
+    },
+    "GetAlertContactsResponse": {
+      "type": "object",
+      "properties": {
+        "stat": {
+          "type": "string"
+        },
+        "error": {
+          "$ref": "#/definitions/Error"
+        },
+        "pagination": {
+          "$ref": "#/definitions/Pagination"
+        },
+        "alert_contacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AlertContact"
+          }
+        }
+      }
+    },
+    "AlertContactResponse": {
+      "type": "object",
+      "properties": {
+        "stat": {
+          "type": "string"
+        },
+        "error": {
+          "$ref": "#/definitions/Error"
+        },
+        "alertcontact": {
+          "$ref": "#/definitions/AlertContact"
+        }
+      }
+    },
+    "AlertContactUnderscoreResponse": {
+      "type": "object",
+      "properties": {
+        "stat": {
+          "type": "string"
+        },
+        "error": {
+          "$ref": "#/definitions/Error"
+        },
+        "alert_contact": {
+          "$ref": "#/definitions/AlertContact"
+        }
+      }
+    },
+    "AlertContact": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "friendly_name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "integer"
+        },
+        "status": {
+          "type": "integer"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "GetMWindowsResponse": {
+      "type": "object",
+      "properties": {
+        "stat": {
+          "type": "string"
+        },
+        "error": {
+          "$ref": "#/definitions/Error"
+        },
+        "pagination": {
+          "$ref": "#/definitions/Pagination"
+        },
+        "mwindows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MWindow"
+          }
+        }
+      }
+    },
+    "MWindowResponse": {
+      "type": "object",
+      "properties": {
+        "stat": {
+          "type": "string"
+        },
+        "error": {
+          "$ref": "#/definitions/Error"
+        },
+        "mwindow": {
+          "$ref": "#/definitions/MWindow"
+        }
+      }
+    },
+    "MWindow": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "user": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "integer"
+        },
+        "friendly_name": {
+          "type": "string"
+        },
+        "start_time": {
+          "type": "integer"
+        },
+        "duration": {
+          "type": "integer"
+        },
+        "value": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer"
+        }
+      }
+    },
+    "GetPSPsResponse": {
+      "type": "object",
+      "properties": {
+        "stat": {
+          "type": "string"
+        },
+        "error": {
+          "$ref": "#/definitions/Error"
+        },
+        "pagination": {
+          "$ref": "#/definitions/Pagination"
+        },
+        "psps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PSP"
+          }
+        }
+      }
+    },
+    "PSPResponse": {
+      "type": "object",
+      "properties": {
+        "stat": {
+          "type": "string"
+        },
+        "error": {
+          "$ref": "#/definitions/Error"
+        },
+        "psp": {
+          "$ref": "#/definitions/PSP"
+        }
+      }
+    },
+    "PSP": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "friendly_name": {
+          "type": "string"
+        },
+        "monitors": {
+          "type": "integer"
+        },
+        "sort": {
+          "type": "integer"
+        },
+        "status": {
+          "type": "integer"
+        },
+        "standard_url": {
+          "type": "string"
+        },
+        "custom_url": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "paths": {
+    "/getAccountDetails": {
+      "post": {
+        "summary": "Get Account Details",
+        "description": "Account details (max number of monitors that can be added and number of up/down/paused monitors) can be grabbed using this method.",
+        "operationId": "get",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "formData",
+            "description": "API key",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "format",
+            "in": "formData",
+            "description": "Response format",
+            "type": "string",
+            "default": "json",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "no error",
+            "schema": {
+              "$ref": "#/definitions/AccountDetailsResponse"
+            }
+          },
+          "400": {
+            "description": "bad parameter"
+          },
+          "500": {
+            "description": "server error"
+          }
+        },
+        "tags": [
+          "AccountDetails"
+        ]
+      }
+    },
+    "/getMonitors": {
+      "post": {
+        "summary": "Get Monitor information",
+        "description": "This is a Swiss-Army knife type of a method for getting any information on monitors. By default, it lists all the monitors in a user's account, their friendly names, types (http, keyword, port, etc.), statuses (up, down, etc.) and uptime ratios. There are optional parameters which lets the getMonitors method to output information on any given monitors rather than all of them.",
+        "operationId": "all",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "formData",
+            "description": "API key",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "format",
+            "in": "formData",
+            "description": "Response format",
+            "type": "string",
+            "default": "json",
+            "required": false
+          },
+          {
+            "name": "monitors",
+            "in": "formData",
+            "description": "optional (if not used, will return all monitors in an account. Else, it is possible to define any number of monitors with their IDs like: monitors=15830-32696-83920)",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "types",
+            "in": "formData",
+            "description": "optional (if not used, will return all monitors types (HTTP, keyword, ping..) in an account. Else, it is possible to define any number of monitor types like: types=1-3-4)",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "statuses",
+            "in": "formData",
+            "description": "optional (if not used, will return all monitors statuses (up, down, paused) in an account. Else, it is possible to define any number of monitor statuses like: statuses=2-9)",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "custom_uptime_ratios",
+            "in": "formData",
+            "description": "optional (defines the number of days to calculate the uptime ratio(s) for. Ex: customUptimeRatio=7-30-45 to get the uptime ratios for those periods)",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "logs",
+            "in": "formData",
+            "description": "optional (defines if the logs of each monitor will be returned. Should be set to 1 for getting the logs. Default is 0)",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "logs_limit",
+            "in": "formData",
+            "description": "optional (the number of logs to be returned (descending order). If empty, all logs are returned.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "response_times",
+            "in": "formData",
+            "description": "optional (defines if the response time data of each monitor will be returned. Should be set to 1 for getting them. Default is 0)",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "response_times_limits",
+            "in": "formData",
+            "description": "",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "response_times_average",
+            "in": "formData",
+            "description": "optional (by default, response time value of each check is returned. The API can return average values in given minutes. Default is 0. For ex: the Uptime Robot dashboard displays the data averaged/grouped in 30 minutes)",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "response_times_start_date",
+            "in": "formData",
+            "description": "optional (the number of response time logs to be returned (descending order). If empty, last 24 hours of logs are returned (if responseTimesStartDate and responseTimesEndDate are not used).",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "response_times_end_date",
+            "in": "formData",
+            "description": "optional and works only for the Pro Plan as 24 hour+ logs are kept only in the Pro Plan (ending date of the response times, formatted as 2015-04-23 and must be used with responseTimesStartDate) (can only be used if monitors parameter is used with a single monitorID and responseTimesEndDate - responseTimesStartDate can't be more than 7 days)",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "alert_contacts",
+            "in": "formData",
+            "description": "optional (defines if the notified alert contacts of each notification will be returned. Should be set to 1 for getting them. Default is 0. Requires logs to be set to1)",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "offset",
+            "in": "formData",
+            "description": "optional (used for pagination. Defines the record to start paginating. Default is 0)",
+            "type": "integer",
+            "default": 0,
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "formData",
+            "description": "optional (used for pagination. Defines the max number of records to return for the response. Default and max. is 50)",
+            "type": "integer",
+            "default": 50,
+            "required": false
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "optional (a keyword of your choice to search within monitorURL and monitorFriendlyName and get filtered results)",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "no error",
+            "schema": {
+              "$ref": "#/definitions/GetMonitorsResponse"
+            }
+          },
+          "400": {
+            "description": "bad parameter"
+          },
+          "500": {
+            "description": "server error"
+          }
+        },
+        "tags": [
+          "Monitor"
+        ]
+      }
+    },
+    "/newMonitor": {
+      "post": {
+        "summary": "Create New Monitor",
+        "description": "New monitors of any type can be created using this method.",
+        "operationId": "create",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "formData",
+            "description": "API key",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "format",
+            "in": "formData",
+            "description": "Response format",
+            "type": "string",
+            "default": "json",
+            "required": false
+          },
+          {
+            "name": "friendly_name",
+            "in": "formData",
+            "description": "name of monitor",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "url",
+            "in": "formData",
+            "description": "URL to monitor",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "type",
+            "in": "formData",
+            "description": "type of monitor",
+            "type": "integer",
+            "default": 1,
+            "required": true
+          },
+          {
+            "name": "sub_type",
+            "in": "formData",
+            "description": "required for port monitoring",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "port",
+            "in": "formData",
+            "description": "required for port monitoring",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "keyword_type",
+            "in": "formData",
+            "description": "required for keyword monitoring",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "keyword_value",
+            "in": "formData",
+            "description": "required for keyword monitoring",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "interval",
+            "in": "formData",
+            "description": "optional (in seconds)",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "http_username",
+            "in": "formData",
+            "description": "optional",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "http_password",
+            "in": "formData",
+            "description": "optional",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "alert_contacts",
+            "in": "formData",
+            "description": "optional (the alert contacts to be notified when the monitor goes up/down.Multiple alert_contact>ids can be sent like alert_contacts=457_0_0-373_5_0-8956_2_3 where alert_contact>ids are seperated with - and threshold + recurrence are seperated with _. For ex: alert_contacts=457_5_0 refers to 457 being the alert_contact>id, 5 being the threshold and 0 being the recurrence. As the threshold and recurrence is only available in the Pro Plan, they are always 0 in the Free Plan)",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "mwindows",
+            "in": "formData",
+            "description": "optional (the maintenance windows for the monitor which can be mentioned with their IDs like 345-2986-71)",
+            "type": "integer",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "no error",
+            "schema": {
+              "$ref": "#/definitions/MonitorResponse"
+            }
+          },
+          "400": {
+            "description": "bad parameter"
+          },
+          "500": {
+            "description": "server error"
+          }
+        },
+        "tags": [
+          "Monitor"
+        ]
+      }
+    },
+    "/editMonitor": {
+      "post": {
+        "summary": "Monitors can be edited using this method",
+        "description": "Monitors can be edited using this method. Important: The type of a monitor can not be edited (like changing a HTTP monitor into a Port monitor). For such cases, deleting the monitor and re-creating a new one is adviced.",
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "formData",
+            "description": "API key",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "format",
+            "in": "formData",
+            "description": "Response format",
+            "type": "string",
+            "default": "json",
+            "required": false
+          },
+          {
+            "name": "id",
+            "in": "formData",
+            "description": "ID of the monitor",
+            "type": "integer",
+            "default": "json",
+            "required": true
+          },
+          {
+            "name": "status",
+            "in": "formData",
+            "description": "Status of the monitor (1=resume, 0=pause)",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "friendly_name",
+            "in": "formData",
+            "description": "name of monitor",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "url",
+            "in": "formData",
+            "description": "URL to monitor",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "type",
+            "in": "formData",
+            "description": "type of monitor",
+            "type": "integer",
+            "default": 1,
+            "required": false
+          },
+          {
+            "name": "sub_type",
+            "in": "formData",
+            "description": "required for port monitoring",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "port",
+            "in": "formData",
+            "description": "required for port monitoring",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "keyword_type",
+            "in": "formData",
+            "description": "required for keyword monitoring",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "keyword_value",
+            "in": "formData",
+            "description": "required for keyword monitoring",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "interval",
+            "in": "formData",
+            "description": "optional (in seconds)",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "http_username",
+            "in": "formData",
+            "description": "optional",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "http_password",
+            "in": "formData",
+            "description": "optional",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "alert_contacts",
+            "in": "formData",
+            "description": "optional (the alert contacts to be notified when the monitor goes up/down.Multiple alert_contact>ids can be sent like alert_contacts=457_0_0-373_5_0-8956_2_3 where alert_contact>ids are seperated with - and threshold + recurrence are seperated with _. For ex: alert_contacts=457_5_0 refers to 457 being the alert_contact>id, 5 being the threshold and 0 being the recurrence. As the threshold and recurrence is only available in the Pro Plan, they are always 0 in the Free Plan)",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "mwindows",
+            "in": "formData",
+            "description": "optional (the maintenance windows for the monitor which can be mentioned with their IDs like 345-2986-71)",
+            "type": "integer",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "no error",
+            "schema": {
+              "$ref": "#/definitions/MonitorResponse"
+            }
+          },
+          "400": {
+            "description": "bad parameter"
+          },
+          "500": {
+            "description": "server error"
+          }
+        },
+        "tags": [
+          "Monitor"
+        ]
+      }
+    },
+    "/deleteMonitor": {
+      "post": {
+        "summary": "Delete Monitor",
+        "description": "Monitors can be deleted using this method.",
+        "operationId": "delete",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "formData",
+            "description": "API key",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "format",
+            "in": "formData",
+            "description": "Response format",
+            "type": "string",
+            "default": "json",
+            "required": false
+          },
+          {
+            "name": "id",
+            "in": "formData",
+            "description": "ID of monitor to delete",
+            "type": "integer",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "no error",
+            "schema": {
+              "$ref": "#/definitions/MonitorResponse"
+            }
+          },
+          "400": {
+            "description": "bad parameter"
+          },
+          "500": {
+            "description": "server error"
+          }
+        },
+        "tags": [
+          "Monitor"
+        ]
+      }
+    },
+    "/resetMonitor": {
+      "post": {
+        "summary": "Reset Monitor",
+        "description": "Monitors can be reset (deleting all stats and response time data) using this method.",
+        "operationId": "reset",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "formData",
+            "description": "API key",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "format",
+            "in": "formData",
+            "description": "Response format",
+            "type": "string",
+            "default": "json",
+            "required": false
+          },
+          {
+            "name": "id",
+            "in": "formData",
+            "description": "ID of monitor to reset",
+            "type": "integer",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "no error",
+            "schema": {
+              "$ref": "#/definitions/MonitorResponse"
+            }
+          },
+          "400": {
+            "description": "bad parameter"
+          },
+          "500": {
+            "description": "server error"
+          }
+        },
+        "tags": [
+          "Monitor"
+        ]
+      }
+    },
+    "/getAlertContacts": {
+      "post": {
+        "summary": "Get Alert Contacts",
+        "description": "The list of alert contacts can be called with this method.",
+        "operationId": "all",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "formData",
+            "description": "API key",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "format",
+            "in": "formData",
+            "description": "Response format",
+            "type": "string",
+            "default": "json",
+            "required": false
+          },
+          {
+            "name": "alertcontacts",
+            "in": "formData",
+            "description": "if not used, will return all alert contacts in an account. Else, it is possible to define any number of alert contacts with their IDs like: alertcontacts=236-1782-4790",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "offset",
+            "in": "formData",
+            "description": "used for pagination. Defines the record to start paginating. Default is 0",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "formData",
+            "description": "used for pagination. Defines the max number of records to return for the response. Default and max. is 50",
+            "type": "integer",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "no error",
+            "schema": {
+              "$ref": "#/definitions/GetAlertContactsResponse"
+            }
+          },
+          "400": {
+            "description": "bad parameter"
+          },
+          "500": {
+            "description": "server error"
+          }
+        },
+        "tags": [
+          "AlertContact"
+        ]
+      }
+    },
+    "/newAlertContact": {
+      "post": {
+        "summary": "Create new alert contact",
+        "description": "New alert contacts of any type (mobile/SMS alert contacts are not supported yet) can be created using this method. The alert contacts created using the API are validated with the same way as they were created from uptimerobot.com (activation link for e-mails, tc.).",
+        "operationId": "create",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "formData",
+            "description": "API key",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "format",
+            "in": "formData",
+            "description": "Response format",
+            "type": "string",
+            "default": "json",
+            "required": false
+          },
+          {
+            "name": "type",
+            "in": "formData",
+            "type": "string",
+            "description": "1 - SMS, 2 - E-mail, 3 - Twitter DM, 4 - Boxcar, 5 - Web-Hook, 6 - Pushbullet, 7 - Zapier, 9 - Pushover, 10 - HipChat, 11 - Slack - he type of the alert contact notified (SMS is not supported yet).",
+            "default" : "2",
+            "required": true
+          },
+          {
+            "name": "value",
+            "in": "formData",
+            "description": "address qualifier depending on type, e.g. email address",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "friendly_name",
+            "in": "formData",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "no error",
+            "schema": {
+              "$ref": "#/definitions/AlertContactResponse"
+            }
+          },
+          "400": {
+            "description": "bad parameter"
+          },
+          "500": {
+            "description": "server error"
+          }
+        },
+        "tags": [
+          "AlertContact"
+        ]
+      }
+    },
+    "/editAlertContact": {
+      "post": {
+        "summary": "Update alert contact",
+        "description": "Update alert contacts of any type (mobile/SMS alert contacts are not supported yet) can be created using this method. The alert contacts created using the API are validated with the same way as they were created from uptimerobot.com (activation link for e-mails, tc.).",
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "formData",
+            "description": "API key",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "format",
+            "in": "formData",
+            "description": "Response format",
+            "type": "string",
+            "default": "json",
+            "required": false
+          },
+          {
+            "name": "id",
+            "in": "formData",
+            "type": "integer",
+            "required": true
+          },
+          {
+            "name": "type",
+            "in": "formData",
+            "type": "string",
+            "description": "1 - SMS, 2 - E-mail, 3 - Twitter DM, 4 - Boxcar, 5 - Web-Hook, 6 - Pushbullet, 7 - Zapier, 9 - Pushover, 10 - HipChat, 11 - Slack - he type of the alert contact notified (SMS is not supported yet).",
+            "default" : "2",
+            "required": true
+          },
+          {
+            "name": "value",
+            "in": "formData",
+            "description": "address qualifier depending on type (can only be used if it is a web-hook alert contact)",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "friendly_name",
+            "in": "formData",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "no error",
+            "schema": {
+              "$ref": "#/definitions/AlertContactUnderscoreResponse"
+            }
+          },
+          "400": {
+            "description": "bad parameter"
+          },
+          "500": {
+            "description": "server error"
+          }
+        },
+        "tags": [
+          "AlertContact"
+        ]
+      }
+    },
+    "/deleteAlertContact": {
+      "post": {
+        "summary": "Delete Alert Contact",
+        "description": "Alert contacts can be deleted using this method.",
+        "operationId": "delete",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "formData",
+            "description": "API key",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "format",
+            "in": "formData",
+            "description": "Response format",
+            "type": "string",
+            "default": "json",
+            "required": false
+          },
+          {
+            "name": "id",
+            "in": "formData",
+            "description": "ID of the alert contact to delete",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "no error",
+            "schema": {
+              "$ref": "#/definitions/AlertContactUnderscoreResponse"
+            }
+          },
+          "400": {
+            "description": "bad parameter"
+          },
+          "500": {
+            "description": "server error"
+          }
+        },
+        "tags": [
+          "AlertContact"
+        ]
+      }
+    },
+    "/getMWindows": {
+      "post": {
+        "summary": "Get Maintenance windows",
+        "description": "The list of maintenance windows can be called with this method.",
+        "operationId": "all",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "formData",
+            "description": "API key",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "format",
+            "in": "formData",
+            "description": "Response format",
+            "type": "string",
+            "default": "json",
+            "required": false
+          },
+          {
+            "name": "mwindows",
+            "in": "formData",
+            "description": "optional (if not used, will return all mwindows in an account. Else, it is possible to define any number of mwindows with their IDs like: mwindows=236-1782-4790)",
+            "type": "string",
+            "default": "json",
+            "required": false
+          },
+          {
+            "name": "offset",
+            "in": "formData",
+            "description": "optional (used for pagination. Defines the record to start paginating. Default is 0)",
+            "type": "integer",
+            "default": 0,
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "formData",
+            "description": "optional (used for pagination. Defines the max number of records to return for the response. Default and max. is 10)",
+            "type": "integer",
+            "default": 10,
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "no error",
+            "schema": {
+              "$ref": "#/definitions/GetMWindowsResponse"
+            }
+          },
+          "400": {
+            "description": "bad parameter"
+          },
+          "500": {
+            "description": "server error"
+          }
+        },
+        "tags": [
+          "MWindow"
+        ]
+      }
+    },
+    "/getPSPs": {
+      "post": {
+        "summary": "Get public status pages",
+        "description": "The list of public status pages can be called with this method.",
+        "operationId": "all",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "formData",
+            "description": "API key",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "format",
+            "in": "formData",
+            "description": "Response format",
+            "type": "string",
+            "default": "json",
+            "required": false
+          },
+          {
+            "name": "psps",
+            "in": "formData",
+            "description": "optional (if not used, will return all alert contacts in an account. Else, it is possible to define any number of alert contacts with their IDs like: psps=236-1782-4790)",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "offset",
+            "in": "formData",
+            "description": "optional (used for pagination. Defines the record to start paginating. Default is 0)",
+            "type": "integer",
+            "default": 0,
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "formData",
+            "description": "optional (used for pagination. Defines the max number of records to return for the response. Default and max. is 10)",
+            "type": "integer",
+            "default": 10,
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "no error",
+            "schema": {
+              "$ref": "#/definitions/GetPSPsResponse"
+            }
+          },
+          "400": {
+            "description": "bad parameter"
+          },
+          "500": {
+            "description": "server error"
+          }
+        },
+        "tags": [
+          "PSP"
+        ]
+      }
+    },
+    "/newPSP": {
+      "post": {
+        "summary": "Create new public status page",
+        "description": "New public status pages can be created using this method.",
+        "operationId": "create",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "formData",
+            "description": "API key",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "format",
+            "in": "formData",
+            "description": "Response format",
+            "type": "string",
+            "default": "json",
+            "required": false
+          },
+          {
+            "name": "friendly_name",
+            "in": "formData",
+            "description": "name of monitor",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "monitors",
+            "in": "formData",
+            "description": "required (The monitors to be displayed can be sent as 15830-32696-83920. Or 0 for displaying all monitors)",
+            "type": "string",
+            "default": "0",
+            "required": true
+          },
+          {
+            "name": "custom_domain",
+            "in": "formData",
+            "description": "optinal",
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "formData",
+            "description": "required for port monitoring",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "hide_url_links",
+            "in": "formData",
+            "description": "optional (for hiding the Uptime Robot links and only available in the Pro Plan)",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "status",
+            "in": "formData",
+            "description": "optional",
+            "type": "integer",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "no error",
+            "schema": {
+              "$ref": "#/definitions/PSPResponse"
+            }
+          },
+          "400": {
+            "description": "bad parameter"
+          },
+          "500": {
+            "description": "server error"
+          }
+        },
+        "tags": [
+          "PSP"
+        ]
+      }
+    },
+    "/editPSP": {
+      "post": {
+        "summary": "Public status pages can be edited using this method",
+        "description": "Public status pages can be edited using this method. ",
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "formData",
+            "description": "API key",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "format",
+            "in": "formData",
+            "description": "Response format",
+            "type": "string",
+            "default": "json",
+            "required": false
+          },
+          {
+            "name": "id",
+            "in": "formData",
+            "description": "ID",
+            "type": "integer",
+            "required": true
+          },
+          {
+            "name": "friendly_name",
+            "in": "formData",
+            "description": "name of monitor",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "monitors",
+            "in": "formData",
+            "description": "optional (The monitors to be displayed can be sent as 15830-32696-83920. Or 0 for displaying all monitors)",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "custom_domain",
+            "in": "formData",
+            "description": "optional",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "sort",
+            "in": "formData",
+            "description": "optional",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "hide_url_links",
+            "in": "formData",
+            "description": "optional (for hiding the Uptime Robot links and only available in the Pro Plan)",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "status",
+            "in": "formData",
+            "description": "optional",
+            "type": "integer",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "no error",
+            "schema": {
+              "$ref": "#/definitions/PSPResponse"
+            }
+          },
+          "400": {
+            "description": "bad parameter"
+          },
+          "500": {
+            "description": "server error"
+          }
+        },
+        "tags": [
+          "PSP"
+        ]
+      }
+    },
+    "/deletePSP": {
+      "post": {
+        "summary": "Delete public status page",
+        "description": "Public status pages can be deleted using this method.",
+        "operationId": "delete",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "formData",
+            "description": "API key",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "format",
+            "in": "formData",
+            "description": "Response format",
+            "type": "string",
+            "default": "json",
+            "required": false
+          },
+          {
+            "name": "id",
+            "in": "formData",
+            "description": "ID of public status page to delete",
+            "type": "integer",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "no error",
+            "schema": {
+              "$ref": "#/definitions/PSPResponse"
+            }
+          },
+          "400": {
+            "description": "bad parameter"
+          },
+          "500": {
+            "description": "server error"
+          }
+        },
+        "tags": [
+          "PSP"
+        ]
+      }
+    }
+  }
+}
